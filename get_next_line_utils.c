@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahocine <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ahocine <ahocine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 01:49:51 by ahocine           #+#    #+#             */
 /*   Updated: 2021/07/01 01:49:53 by ahocine          ###   ########.fr       */
