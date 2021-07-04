@@ -20,6 +20,6 @@ int	get_next_line(int fd, char **line)
 
 	if (fd < 0 || !line || read(fd, BUFFER_SIZE, 0) < 0)
 		return (-1);
-	buff_tmp = (void *)0;
+	read(fd, curr_line, BUFFER_SIZE);
 	return (0);
 }
