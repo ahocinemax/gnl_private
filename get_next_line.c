@@ -14,10 +14,11 @@
 
 int	get_next_line(int fd, char **line)
 {
+	size_t		i;
 	char		*buff_tmp;
-	static char	buffer;
+	static char	*curr_line;
 
-	if (fd < 0 || !line || read(fd, buffer, 0) < 0)
+	if (fd < 0 || !line || read(fd, BUFFER_SIZE, 0) < 0)
 		return (-1);
 	buff_tmp = (void *)0;
 	return (0);
