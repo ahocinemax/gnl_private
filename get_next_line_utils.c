@@ -23,6 +23,16 @@ char	*ft_strcpy(char *dest, const char *src)
 	return (dest);
 }
 
+int	ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char		*res;
@@ -41,4 +51,3 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	res[len1 + len2] = '\0';
 	return (res);
 }
-

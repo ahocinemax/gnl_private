@@ -12,24 +12,27 @@
 
 #include "get_next_line.h"
 
-int	ft_search_end(char *line)
+int	ft_search_end(char *str)
 {
-	while (*line)
-		line++;
-	
+	ssize_t	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == '\n')
+			return (1);
+	return (0);
 }
 
 int	get_next_line(int fd, char **line)
 {
-	ssize_t	i;
-	char	buff[BUFFER_SIZE + 1];
+	ssize_t		i;
+	char		buff[BUFFER_SIZE + 1];
 	static char	*curr_line;
 
 	if (fd < 0 || !line || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
 		return (-1);
 	while (read(fd, buff, BUFFER_SIZE))
-	{
-
-	}
+		if (ft_search_end(buff))
+			ft_strjoin(curr_line, buff);
 	return (0);
 }
