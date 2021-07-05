@@ -25,14 +25,15 @@ int	ft_search_end(char *str)
 
 int	get_next_line(int fd, char **line)
 {
-	ssize_t		i;
 	char		buff[BUFFER_SIZE + 1];
 	static char	*curr_line;
-
+	ssize_t		lu;
+	
 	if (fd < 0 || !line || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
 		return (-1);
-	while (read(fd, buff, BUFFER_SIZE))
+	lu = (read(fd, buff, BUFFER_SIZE) > 0);
+	while (read(fd, buff, BUFFER_SIZE) > 0)
 		if (ft_search_end(buff))
 			ft_strjoin(curr_line, buff);
-	return (0);
+	return (1);
 }
