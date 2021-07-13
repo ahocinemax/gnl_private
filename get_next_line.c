@@ -23,19 +23,20 @@ int	ft_search_end(char *str)
 	return (0);
 }
 
-int	get_next_line(int fd, char **line)
+char	*get_next_line(int fd)
 {
 	ssize_t		lu;
 	char		buff[BUFFER_SIZE + 1];
 	static char	*curr_line;
 	
-	if (fd < 0 || !line || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
 		return (-1);
 	lu = 1;
+	curr_line = NULL;
 	curr_line = ft_strjoin(curr_line, buff);
-	while (!ft_search_end(buff) && lu > 0)
+	while (!ft_search_end(buff) && lu)
 	{
-		lu = (read(fd, buff, BUFFER_SIZE) > 0);
+		lu = read(fd, buff, BUFFER_SIZE);
 		if (lu < 0)
 		{
 			free(curr_line);
