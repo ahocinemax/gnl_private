@@ -18,8 +18,9 @@
 # endif
 
 # include <stdlib.h>
-# include <unistd.h>
 # include <stdio.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 char	*ft_strcpy(char *dest, const char *src);
 int		ft_strlen(const char *str);

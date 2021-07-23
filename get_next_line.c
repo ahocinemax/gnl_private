@@ -19,7 +19,7 @@ int	ft_search_end(char *str)
 	i = -1;
 	while (str[++i])
 		if (str[i] == '\n')
-			return (1);
+			return (i);
 	return (0);
 }
 
@@ -28,22 +28,53 @@ char	*get_next_line(int fd)
 	ssize_t		lu;
 	char		buff[BUFFER_SIZE + 1];
 	static char	*curr_line;
-	
+	int			eol;
+
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
-		return (-1);
-	lu = 1;
-	curr_line = NULL;
-	curr_line = ft_strjoin(curr_line, buff);
-	while (!ft_search_end(buff) && lu)
+		return (NULL);
+	lu = read(fd, buff, BUFFER_SIZE);
+	curr_line = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+//	printf("buff : '%s'\n", buff);
+	eol = ft_search_end(buff);
+	while (eol && lu)
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
+		eol = ft_search_end(buff);
 		if (lu < 0)
 		{
 			free(curr_line);
-			return (-1);
+			return (NULL);
 		}
-		buff[lu] = 0;
+//		printf("lu, eol : %d, %ld\n", eol, lu);
+		if (eol < lu)
+			buff[eol] = 0;
+		else
+			buff[lu] = 0;
+//		printf("curr_line = %s\n", curr_line);
+//		printf("buff = %s\n", buff);
 		curr_line = ft_strjoin(curr_line, buff);
 	}
-	return (1);
+	return (curr_line);
+}
+
+int	main(void)
+{
+	int		fd;
+	char	*ret;
+
+	fd = open("test.txt", O_RDONLY);
+	if (fd < 0)
+		printf("\e[31mError: open failed\e[0m\n");
+	else
+	{
+		ret = get_next_line(fd);
+		printf("ret : %s\n", ret);
+		while (ret)
+		{
+			printf("current_line = %s\n", ret);
+			ret = get_next_line(fd);
+		}
+	}
+	printf("No more line.\n");
+	return (0);
 }
