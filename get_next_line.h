@@ -22,9 +22,9 @@
 # include <fcntl.h>
 # include <unistd.h>
 
+void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putnbr_fd(int n, int fd);
-char	*ft_strcpy(char *dest, const char *src);
 int		ft_strlen(const char *str);
 char	*ft_strcat(char *dest, char *src);
 int		ft_search_end(char *str);

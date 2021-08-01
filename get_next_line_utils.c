@@ -12,17 +12,6 @@
 
 #include "get_next_line.h"
 
-char	*ft_strcpy(char *dest, const char *src)
-{
-	size_t	i;
-
-	i = -1;
-	while (src[++i])
-		dest[i] = src[i];
-	dest[i] = '\0';
-	return (dest);
-}
-
 int	ft_strlen(const char *str)
 {
 	int	i;
@@ -51,22 +40,33 @@ char	*ft_strcat(char *dest, char *src)
 	return (dest);
 }
 
-void	ft_putnbr_fd(int n, int fd)
+char	*ft_line(char *tmp)
 {
-	if (n < 0)
-		ft_putchar_fd('-', fd);
-	if (n < 0)
-		n *= -1;
-	if (n < 10)
-		ft_putchar_fd(n + '0', fd);
-	else
+	char	*curr_line;
+	int		i;
+
+	if (!tmp)
+		return (NULL);
+	curr_line = (char *)calloc(ft_search_end(tmp) + 1, sizeof(char));
+	if (!curr_line)
+		return (NULL);
+	i = 0;
+	while (tmp && tmp[i] != '\n')
 	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
+		curr_line[i] = tmp[i];
+		i++;
 	}
+	curr_line[i] = 0;
+	return (curr_line);
 }
 
-void	ft_putchar_fd(char c, int fd)
+char	*ft_reste(char *tmp)
 {
-	write(fd, &c, 1);
+	char	*reste;
+	int		i;
+	int		j;
+
+	if (!tmp)
+		return (NULL);
+	i = ft_search_end(tmp);
 }

@@ -1,58 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahocine <ahocine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/01 01:49:25 by ahocine           #+#    #+#             */
-/*   Updated: 2021/07/01 01:49:27 by ahocine          ###   ########.fr       */
+/*   Created: 2021/07/01 01:49:51 by ahocine           #+#    #+#             */
+/*   Updated: 2021/07/01 01:49:53 by ahocine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_search_end(char *str)
+void	ft_putchar_fd(char c, int fd)
 {
-	ssize_t	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '\n')
-			return (i);
-	return (0);
+	write(fd, &c, 1);
 }
 
-char	*get_next_line(int fd)
+void	ft_putnbr_fd(int n, int fd)
 {
-	ssize_t		lu;
-	char		buff[BUFFER_SIZE + 1];
-	char		*curr_line;
-	int			eol;
-	static char	*tmp;
-
-	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
-		return (NULL);
-	lu = 1;
-//	curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!curr_line)
-		return (NULL);
-	eol = 0;
-	while (!eol && lu > 0)
+	if (n < 0)
+		ft_putchar_fd('-', fd);
+	if (n < 0)
+		n *= -1;
+	if (n < 10)
+		ft_putchar_fd(n + '0', fd);
+	else
 	{
-		lu = read(fd, buff, BUFFER_SIZE);
-		eol = ft_search_end(buff);
-		if (lu < 1)
-		{
-			free(curr_line);
-			return (NULL);
-		}
-		buff[lu] = 0;
-		tmp = ft_strcat(curr_line, buff);
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
 	}
-	free(buff);
-	
-	return (curr_line);
+}
+
+void	ft_putstr(char *s, int fd)
+{
+	int		i;
+
+	i = 0;
+	while (s[i])
+		ft_putchar_fd(s[i++], 1);
 }
 
 int	main(void)
