@@ -38,26 +38,26 @@ void	ft_putstr(char *s, int fd)
 
 	i = 0;
 	while (s[i])
-		ft_putchar_fd(s[i++], 1);
+		ft_putchar_fd(s[i++], fd);
 }
 
 int	main(void)
 {
 	int		fd;
 	char	*ret;
-	int		i = 1;
+	int		i;
 
+	i = 1;
 	fd = open("test.txt", O_RDONLY);
 	if (fd < 0)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
 	{
-		ret = get_next_line(fd);
-		printf("%d line : %s\n", i++, ret);
-		ret = get_next_line(fd);
-		printf("%d line : %s\n", i++, ret);
-		ret = get_next_line(fd);
-		printf("%d line : %s\n", i++, ret);
+		while (i < 5)
+		{
+			ret = get_next_line(fd);
+			printf("%d line : %s\n", i++, ret);
 		}
+	}
 	return (0);
 }

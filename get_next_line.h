@@ -22,12 +22,12 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-void	ft_putstr_fd(char *s, int fd);
-void	ft_putchar_fd(char c, int fd);
-void	ft_putnbr_fd(int n, int fd);
-int		ft_strlen(const char *str);
+char	*verify_end_file(char *tmp, ssize_t lu, char *curr_line);
 char	*ft_strcat(char *dest, char *src);
-int		ft_search_end(char *str);
 char	*get_next_line(int fd);
+char	*ft_reste(char *tmp);
+char	*ft_line(char *tmp);
+int		ft_strlen(const char *str);
+int		ft_search_end(char *str);
 
 #endif

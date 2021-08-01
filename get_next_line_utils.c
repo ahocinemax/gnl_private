@@ -24,8 +24,8 @@ int	ft_strlen(const char *str)
 
 char	*ft_strcat(char *dest, char *src)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (dest[i])
@@ -69,4 +69,28 @@ char	*ft_reste(char *tmp)
 	if (!tmp)
 		return (NULL);
 	i = ft_search_end(tmp);
+	if (!i)
+	{
+		free(tmp);
+		return (NULL);
+	}
+	reste = (char *)calloc(ft_strlen(tmp) - i, sizeof(char));
+	if (!reste)
+		return (NULL);
+	j = 0;
+	while (tmp[i])
+		reste[j++] = tmp[i++];
+	free(tmp);
+	return (reste);
+}
+
+int	ft_search_end(char *str)
+{
+	ssize_t	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == '\n')
+			return (i);
+	return (0);
 }

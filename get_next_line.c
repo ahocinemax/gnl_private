@@ -12,15 +12,15 @@
 
 #include "get_next_line.h"
 
-int	ft_search_end(char *str)
+char	*verify_end_file(char *tmp, ssize_t lu, char *curr_line)
 {
-	ssize_t	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '\n')
-			return (i);
-	return (0);
+	if (!tmp && lu == 0 && ft_strlen(curr_line) == 0)
+	{
+		free(curr_line);
+		return (NULL);
+	}
+	else
+		return (curr_line);
 }
 
 char	*get_next_line(int fd)
@@ -34,7 +34,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	lu = 1;
-//	curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
+	curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!curr_line)
 		return (NULL);
 	eol = 0;
@@ -50,28 +50,8 @@ char	*get_next_line(int fd)
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
 	}
-	free(buff);
-	
+	curr_line = ft_line(tmp);
+	tmp = ft_reste(tmp);
+	curr_line = verify_end_file(tmp, lu, curr_line);
 	return (curr_line);
-}
-
-int	main(void)
-{
-	int		fd;
-	char	*ret;
-	int		i = 1;
-
-	fd = open("test.txt", O_RDONLY);
-	if (fd < 0)
-		printf("\e[31mError: open failed\e[0m\n");
-	else
-	{
-		ret = get_next_line(fd);
-		printf("%d line : %s\n", i++, ret);
-		ret = get_next_line(fd);
-		printf("%d line : %s\n", i++, ret);
-		ret = get_next_line(fd);
-		printf("%d line : %s\n", i++, ret);
-		}
-	return (0);
 }
