@@ -74,7 +74,7 @@ char	*ft_reste(char *tmp)
 		free(tmp);
 		return (NULL);
 	}
-	reste = (char *)calloc(ft_strlen(tmp) - i, sizeof(char));
+	reste = (char *)calloc(ft_strlen(tmp) - i + 1, sizeof(char));
 	if (!reste)
 		return (NULL);
 	j = 0;
@@ -89,8 +89,11 @@ int	ft_search_end(char *str)
 	ssize_t	i;
 
 	i = -1;
-	while (str[++i])
-		if (str[i] == '\n')
-			return (i);
+	if (str)
+	{
+		while (str[++i])
+			if (str[i] == '\n')
+				return (i);
+	}
 	return (0);
 }

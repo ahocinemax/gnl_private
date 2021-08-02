@@ -12,15 +12,27 @@
 
 #include "get_next_line.h"
 
-char	*verify_end_file(char *tmp, ssize_t lu, char *curr_line)
+char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line)
 {
-	if (!tmp && lu == 0 && ft_strlen(curr_line) == 0)
+	if (!tmp && !lu && !ft_strlen(curr_line))
 	{
 		free(curr_line);
 		return (NULL);
 	}
 	else
 		return (curr_line);
+}
+
+static int	ft_init(ssize_t *lu, char **curr_line, int *eol, char **tmp)
+{
+	*lu = 1;
+	*curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!curr_line)
+		return (-1);
+	*eol = 0;
+	if (**tmp)
+		*tmp = ft_strcat(*tmp, *curr_line);
+	return (0);
 }
 
 char	*get_next_line(int fd)
@@ -31,14 +43,11 @@ char	*get_next_line(int fd)
 	int			eol;
 	static char	*tmp;
 
-	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
+		ft_init(&lu, &curr_line, &eol, &tmp))
 		return (NULL);
-	lu = 1;
-	curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!curr_line)
-		return (NULL);
-	eol = 0;
-	while (!eol && lu > 0)
+	printf("reste = [%s]\n", tmp);
+	while (!eol && lu > 0 && !ft_search_end(tmp))
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
 		eol = ft_search_end(buff);
@@ -49,9 +58,11 @@ char	*get_next_line(int fd)
 		}
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
+//		printf("tmp = [%s]\n", tmp);
 	}
 	curr_line = ft_line(tmp);
+//	printf("curr = [%s]\n", curr_line);
 	tmp = ft_reste(tmp);
-	curr_line = verify_end_file(tmp, lu, curr_line);
+	curr_line = ft_free_eof(tmp, lu, curr_line);
 	return (curr_line);
 }

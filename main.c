@@ -53,10 +53,10 @@ int	main(void)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
 	{
-		while (i < 5)
+		while (i < 4)
 		{
 			ret = get_next_line(fd);
-			printf("%d line : %s\n", i++, ret);
+			printf("line %d : %s\n", i++, ret);
 		}
 	}
 	return (0);

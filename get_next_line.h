@@ -22,7 +22,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-char	*verify_end_file(char *tmp, ssize_t lu, char *curr_line);
+char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line);
 char	*ft_strcat(char *dest, char *src);
 char	*get_next_line(int fd);
 char	*ft_reste(char *tmp);
