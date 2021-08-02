@@ -23,7 +23,22 @@ char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line)
 		return (curr_line);
 }
 
-static int	ft_init(ssize_t *lu, char **curr_line, int *eol, char **tmp)
+void	ft_strcpy(char **dst, char **src)
+{
+	size_t	i;
+
+	i = 0;
+	if (!src)
+		return ;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = 0;
+}
+
+int	ft_init(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
 	*lu = 1;
 	*curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
@@ -31,7 +46,10 @@ static int	ft_init(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 		return (-1);
 	*eol = 0;
 	if (**tmp)
-		*tmp = ft_strcat(*tmp, *curr_line);
+	{
+		ft_strcpy(curr_line, tmp);
+		printf("reste = [%s]\n", *curr_line);
+	}
 	return (0);
 }
 
@@ -46,7 +64,6 @@ char	*get_next_line(int fd)
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
 		ft_init(&lu, &curr_line, &eol, &tmp))
 		return (NULL);
-	printf("reste = [%s]\n", tmp);
 	while (!eol && lu > 0 && !ft_search_end(tmp))
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
@@ -58,10 +75,8 @@ char	*get_next_line(int fd)
 		}
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
-//		printf("tmp = [%s]\n", tmp);
 	}
 	curr_line = ft_line(tmp);
-//	printf("curr = [%s]\n", curr_line);
 	tmp = ft_reste(tmp);
 	curr_line = ft_free_eof(tmp, lu, curr_line);
 	return (curr_line);
