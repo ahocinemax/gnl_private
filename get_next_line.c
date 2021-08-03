@@ -28,28 +28,24 @@ void	ft_strcpy(char **dst, char **src)
 	size_t	i;
 
 	i = 0;
-	if (!src)
+	if (!(*src))
 		return ;
-	while (src[i])
+	while (*src[i])
 	{
-		dst[i] = src[i];
+		*dst[i] = *src[i];
 		i++;
 	}
-	dst[i] = 0;
 }
 
-int	ft_init(ssize_t *lu, char **curr_line, int *eol, char **tmp)
+int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
 	*lu = 1;
 	*curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!curr_line)
 		return (-1);
 	*eol = 0;
-	if (**tmp)
-	{
+	if (!(*tmp))
 		ft_strcpy(curr_line, tmp);
-		printf("reste = [%s]\n", *curr_line);
-	}
 	return (0);
 }
 
@@ -62,8 +58,9 @@ char	*get_next_line(int fd)
 	static char	*tmp;
 
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
-		ft_init(&lu, &curr_line, &eol, &tmp))
+		ft_init_check(&lu, &curr_line, &eol, &tmp))
 		return (NULL);
+	printf("reste = [%s]\neol = %d\n", tmp, ft_search_end(tmp));
 	while (!eol && lu > 0 && !ft_search_end(tmp))
 	{
 		lu = read(fd, buff, BUFFER_SIZE);

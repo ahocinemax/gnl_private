@@ -22,7 +22,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-int		ft_init(ssize_t *lu, char **curr_line, int *eol, char **tmp);
+int		ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp);
 char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line);
 char	*ft_strcat(char *dest, char *src);
 void	ft_strcpy(char **dst, char **src);
