@@ -40,12 +40,12 @@ void	ft_strcpy(char **dst, char **src)
 int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
 	*lu = 1;
-	*curr_line = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
+	*curr_line = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!curr_line)
 		return (-1);
 	*eol = 0;
-	if (!(*tmp))
-		ft_strcpy(curr_line, tmp);
+	if (*tmp)
+		ft_strcat(*curr_line, *tmp);
 	return (0);
 }
 
@@ -60,7 +60,6 @@ char	*get_next_line(int fd)
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
 		ft_init_check(&lu, &curr_line, &eol, &tmp))
 		return (NULL);
-	printf("reste = [%s]\neol = %d\n", tmp, ft_search_end(tmp));
 	while (!eol && lu > 0 && !ft_search_end(tmp))
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
