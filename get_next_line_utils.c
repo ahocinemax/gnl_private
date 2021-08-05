@@ -74,7 +74,7 @@ char	*ft_reste(char *tmp)
 		free(tmp);
 		return (NULL);
 	}
-	reste = (char *)calloc(ft_strlen(tmp) - i++, sizeof(char));
+	reste = (char *)calloc(ft_strlen(tmp) - ++i, sizeof(char));
 	if (!reste)
 		return (NULL);
 	j = 0;
