@@ -51,7 +51,9 @@ char	*ft_line(char *tmp)
 	if (!curr_line)
 		return (NULL);
 	i = 0;
-	while (tmp && tmp[i] != '\n')
+	while (tmp[i] && tmp[i] == '\n')
+		i++;
+	while (tmp[i] && tmp[i] != '\n')
 	{
 		curr_line[i] = tmp[i];
 		i++;
@@ -74,7 +76,8 @@ char	*ft_reste(char *tmp)
 		free(tmp);
 		return (NULL);
 	}
-	reste = (char *)calloc(ft_strlen(tmp) - ++i, sizeof(char));
+	i++;
+	reste = (char *)calloc(ft_strlen(tmp) - i + 1, sizeof(char));
 	if (!reste)
 		return (NULL);
 	j = 0;
