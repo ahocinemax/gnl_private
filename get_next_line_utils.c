@@ -44,21 +44,24 @@ char	*ft_line(char *tmp)
 {
 	char	*curr_line;
 	int		i;
+	int		len;
 
 	if (!tmp)
 		return (NULL);
-	curr_line = (char *)calloc(ft_search_end(tmp) + 1, sizeof(char));
+	len = ft_search_end(tmp);
+	if (!len)
+		len = ft_strlen(tmp);
+	curr_line = (char *)calloc(len + 1, sizeof(char));
 	if (!curr_line)
 		return (NULL);
 	i = 0;
 	while (tmp[i] && tmp[i] == '\n')
 		i++;
-	while (tmp[i] && tmp[i] != '\n')
+	while (tmp[i] && i < len)
 	{
 		curr_line[i] = tmp[i];
 		i++;
 	}
-	curr_line[i] = 0;
 	return (curr_line);
 }
 
@@ -77,6 +80,8 @@ char	*ft_reste(char *tmp)
 		return (NULL);
 	}
 	i++;
+	while (tmp[i] && tmp[i] == '\n')
+		i++;
 	reste = (char *)calloc(ft_strlen(tmp) - i + 1, sizeof(char));
 	if (!reste)
 		return (NULL);

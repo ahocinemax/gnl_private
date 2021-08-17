@@ -14,7 +14,7 @@
 
 char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line)
 {
-	if (!tmp && !lu && !ft_strlen(curr_line))
+	if (lu < BUFFER_SIZE && !ft_search_end(tmp))
 	{
 		printf("fin\n");
 		free(curr_line);
@@ -62,11 +62,9 @@ char	*get_next_line(int fd)
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
 		ft_init_check(&lu, &curr_line, &eol, &tmp))
 		return (NULL);
-	//printf("\e[1;33mReste :\e[0m [%s]\n\n", tmp);
 	while (!eol && lu > 0 && !ft_search_end(tmp))
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
-		//printf("lu = %ld\n", lu);
 		eol = ft_search_end(buff);
 		if (lu < 1 && !eol && !(*tmp))
 		{
@@ -76,12 +74,7 @@ char	*get_next_line(int fd)
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
 	}
-	printf("\e[1;31mA traiter :\e[0m [%s]\n\n", tmp);
 	curr_line = ft_line(tmp);
-	printf("\e[1;34mResultat :\e[0m [%s]\n\n", curr_line);
 	tmp = ft_reste(tmp);
-	printf("\e[1;33mReste :\e[0m [%s]\n\n", tmp);
-	if (lu < 1)
-		free(tmp);
 	return (curr_line);
 }
