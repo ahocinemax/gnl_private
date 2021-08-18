@@ -41,7 +41,7 @@ void	ft_strcpy(char **dst, char **src)
 int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
 	*lu = 1;
-	*curr_line = (char *)calloc((ft_search_end(*tmp) + 1), sizeof(char));
+	*curr_line = (char *)calloc((ft_strlen(*tmp) + 1), sizeof(char));
 	if (!curr_line)
 		return (-1);
 	*eol = 0;
