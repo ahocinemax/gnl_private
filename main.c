@@ -54,8 +54,8 @@ int	main(void)
 	else
 	{
 		while ((ret = get_next_line(fd)))
-			printf("line %d : %s\n", i++, ret);
-		printf("line %d : %s\n", i++, ret);
+			printf("line %d : [%s]\n", i++, ret);
+		printf("line %d : [%s]\n", i++, ret);
 	}
 	return (0);
 }

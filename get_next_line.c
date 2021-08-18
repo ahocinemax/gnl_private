@@ -41,7 +41,7 @@ void	ft_strcpy(char **dst, char **src)
 int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
 	*lu = 1;
-	*curr_line = (char *)calloc((ft_strlen(*tmp) + 1), sizeof(char));
+	*curr_line = (char *)calloc((4095 + 1), sizeof(char));
 	if (!curr_line)
 		return (-1);
 	*eol = 0;
@@ -71,9 +71,13 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		buff[lu] = 0;
-		tmp = ft_strcat(curr_line, buff);
+		if (lu > 0)
+			tmp = ft_strcat(curr_line, buff);
 	}
 	curr_line = ft_line(tmp);
-	tmp = ft_reste(tmp);
+	if (ft_search_end(tmp))
+		tmp = ft_reste(tmp);
+	else
+		free(tmp);
 	return (curr_line);
 }

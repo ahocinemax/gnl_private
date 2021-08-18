@@ -73,13 +73,7 @@ char	*ft_reste(char *tmp)
 
 	if (!tmp)
 		return (NULL);
-	i = ft_search_end(tmp);
-	if (!i)
-	{
-		free(tmp);
-		return (NULL);
-	}
-	i++;
+	i = ft_search_end(tmp) + 1;
 	while (tmp[i] && tmp[i] == '\n')
 		i++;
 	reste = (char *)calloc(ft_strlen(tmp) - i + 1, sizeof(char));
@@ -87,7 +81,12 @@ char	*ft_reste(char *tmp)
 		return (NULL);
 	j = 0;
 	while (tmp[i])
-		reste[j++] = tmp[i++];
+	{
+		if (tmp[i] != '\n')
+			reste[j++] = tmp[i];
+		i++;
+	}
+	reste[j] = 0;
 	free(tmp);
 	return (reste);
 }
@@ -96,12 +95,15 @@ int	ft_search_end(char *str)
 {
 	ssize_t	i;
 
-	i = -1;
+	i = 0;
 	if (str)
 	{
-		while (str[++i])
+		while (str[i])
+		{
 			if (str[i] == '\n')
 				return (i);
+			i++;
+		}
 	}
 	return (0);
 }
