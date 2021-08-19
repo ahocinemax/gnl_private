@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-int	ft_strlen(const char *str)
+int	ft_strlen(char *str)
 {
 	int	i;
 
@@ -80,12 +80,8 @@ char	*ft_reste(char *tmp)
 	if (!reste)
 		return (NULL);
 	j = 0;
-	while (tmp[i])
-	{
-		if (tmp[i] != '\n')
-			reste[j++] = tmp[i];
-		i++;
-	}
+	while (tmp[i] && tmp[i] != '\n')
+		reste[j++] = tmp[i++];
 	reste[j] = 0;
 	free(tmp);
 	return (reste);

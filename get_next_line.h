@@ -29,7 +29,7 @@ void	ft_strcpy(char **dst, char **src);
 char	*get_next_line(int fd);
 char	*ft_reste(char *tmp);
 char	*ft_line(char *tmp);
-int		ft_strlen(const char *str);
+int		ft_strlen(char *str);
 int		ft_search_end(char *str);
 
 #endif

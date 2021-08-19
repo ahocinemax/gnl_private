@@ -45,7 +45,7 @@ int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 	if (!curr_line)
 		return (-1);
 	*eol = 0;
-	if (*tmp && eol)
+	if (*tmp)
 		ft_strcat(*curr_line, *tmp);
 	return (0);
 }
@@ -61,7 +61,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
 		ft_init_check(&lu, &curr_line, &eol, &tmp))
 		return (NULL);
-	while (!eol && lu > 0 && !ft_search_end(tmp))
+	while (!eol && lu > 0)
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
 		eol = ft_search_end(buff);
@@ -71,9 +71,9 @@ char	*get_next_line(int fd)
 			return (NULL);
 		}
 		buff[lu] = 0;
-		if (lu > 0)
-			tmp = ft_strcat(curr_line, buff);
+		tmp = ft_strcat(curr_line, buff);
 	}
+	printf("curr_line : [%s]\n", curr_line);
 	curr_line = ft_line(tmp);
 	if (ft_search_end(tmp))
 		tmp = ft_reste(tmp);
