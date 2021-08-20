@@ -16,7 +16,6 @@ char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line)
 {
 	if (lu < BUFFER_SIZE && !ft_search_end(tmp))
 	{
-		printf("fin\n");
 		free(curr_line);
 		return (NULL);
 	}
@@ -61,26 +60,22 @@ char	*ft_line(char *tmp)
 	return (curr_line);
 }
 
-char	*ft_reste(char *tmp)
+void	ft_reste(char **tmp)
 {
-	char	*reste;
 	int		i;
-	int		j;
 
-	if (!tmp)
-		return (NULL);
-	i = ft_search_end(tmp) + 1;
-	while (tmp[i] && tmp[i] == '\n')
+	if (!(*tmp))
+		return ;
+	i = ft_search_end(*tmp);
+	if (i == 0)
+	{
+		**tmp = 0;
+		return ;
+	}
+	while ((*tmp)[i] && (*tmp)[i] == '\n')
 		i++;
-	reste = (char *)ft_calloc(ft_strlen(tmp) - i + 1, sizeof(char));
-	if (!reste)
-		return (NULL);
-	j = 0;
-	while (tmp[i])
-		reste[j++] = tmp[i++];
-	reste[j] = 0;
-	free(tmp);
-	return (reste);
+	while (i-- > 0)
+		(*tmp)++;
 }
 
 char	*get_next_line(int fd)
@@ -100,18 +95,13 @@ char	*get_next_line(int fd)
 		eol = ft_search_end(buff);
 		if (lu < 1 && !eol && !(*tmp))
 		{
-			printf("fin\n");
 			free(curr_line);
 			return (NULL);
 		}
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
 	}
-	//printf("curr_line : [%s]\n", curr_line);
 	curr_line = ft_line(tmp);
-	if (ft_search_end(tmp))
-		tmp = ft_reste(tmp);
-	else
-		free(tmp);
+	ft_reste(&tmp);
 	return (curr_line);
 }

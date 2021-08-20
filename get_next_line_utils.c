@@ -66,14 +66,13 @@ int	ft_search_end(char *str)
 	ssize_t	i;
 
 	i = 0;
-	if (str)
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		while (str[i])
-		{
-			if (str[i] == '\n')
-				return (i);
-			i++;
-		}
+		if (str[i] == '\n')
+			return (i);
+		i++;
 	}
 	return (0);
 }

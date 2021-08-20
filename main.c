@@ -48,14 +48,13 @@ int	main(void)
 	int		i;
 
 	i = 1;
-	fd = open("test.txt", O_RDONLY);
+	fd = open("test_d.txt", O_RDONLY);
 	if (fd < 0)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
 	{
 		while ((ret = get_next_line(fd)))
 			printf("line %d : [%s]\n", i++, ret);
-		printf("line %d : [%s]\n", i++, ret);
 	}
 	return (0);
 }
