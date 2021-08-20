@@ -40,51 +40,25 @@ char	*ft_strcat(char *dest, char *src)
 	return (dest);
 }
 
-char	*ft_line(char *tmp)
+void	*ft_memset(void *dest, int c, size_t len)
 {
-	char	*curr_line;
-	int		i;
-	int		len;
+	size_t	i;
 
-	if (!tmp)
-		return (NULL);
-	len = ft_search_end(tmp);
-	if (!len)
-		len = ft_strlen(tmp);
-	curr_line = (char *)calloc(len + 1, sizeof(char));
-	if (!curr_line)
-		return (NULL);
-	i = 0;
-	while (tmp[i] && tmp[i] == '\n')
-		i++;
-	while (tmp[i] && i < len)
-	{
-		curr_line[i] = tmp[i];
-		i++;
-	}
-	return (curr_line);
+	i = -1;
+	while (++i < len)
+		((unsigned char *)dest)[i] = (unsigned char)c;
+	return (dest);
 }
 
-char	*ft_reste(char *tmp)
+void	*ft_calloc(size_t number, size_t len)
 {
-	char	*reste;
-	int		i;
-	int		j;
+	void	*res;
 
-	if (!tmp)
+	res = malloc(number * len);
+	if (!(res))
 		return (NULL);
-	i = ft_search_end(tmp) + 1;
-	while (tmp[i] && tmp[i] == '\n')
-		i++;
-	reste = (char *)calloc(ft_strlen(tmp) - i + 1, sizeof(char));
-	if (!reste)
-		return (NULL);
-	j = 0;
-	while (tmp[i] && tmp[i] != '\n')
-		reste[j++] = tmp[i++];
-	reste[j] = 0;
-	free(tmp);
-	return (reste);
+	res = ft_memset(res, 0, number * len);
+	return (res);
 }
 
 int	ft_search_end(char *str)

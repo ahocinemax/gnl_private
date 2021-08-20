@@ -24,8 +24,9 @@
 
 int		ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp);
 char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line);
+void	*ft_calloc(size_t number, size_t len);
+void	*ft_memset(void *dest, int c, size_t len);
 char	*ft_strcat(char *dest, char *src);
-void	ft_strcpy(char **dst, char **src);
 char	*get_next_line(int fd);
 char	*ft_reste(char *tmp);
 char	*ft_line(char *tmp);

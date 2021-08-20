@@ -24,30 +24,63 @@ char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line)
 		return (curr_line);
 }
 
-void	ft_strcpy(char **dst, char **src)
-{
-	size_t	i;
-
-	i = 0;
-	if (!(*src))
-		return ;
-	while (*src[i])
-	{
-		*dst[i] = *src[i];
-		i++;
-	}
-}
-
 int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
 	*lu = 1;
-	*curr_line = (char *)calloc((4095 + 1), sizeof(char));
+	*curr_line = (char *)ft_calloc((4095 + 1), sizeof(char));
 	if (!curr_line)
 		return (-1);
 	*eol = 0;
 	if (*tmp)
 		ft_strcat(*curr_line, *tmp);
 	return (0);
+}
+
+char	*ft_line(char *tmp)
+{
+	char	*curr_line;
+	int		i;
+	int		len;
+
+	if (!tmp)
+		return (NULL);
+	len = ft_search_end(tmp);
+	if (!len)
+		len = ft_strlen(tmp);
+	curr_line = (char *)ft_calloc(len + 1, sizeof(char));
+	if (!curr_line)
+		return (NULL);
+	i = 0;
+	while (tmp[i] && tmp[i] == '\n')
+		i++;
+	while (tmp[i] && i < len)
+	{
+		curr_line[i] = tmp[i];
+		i++;
+	}
+	return (curr_line);
+}
+
+char	*ft_reste(char *tmp)
+{
+	char	*reste;
+	int		i;
+	int		j;
+
+	if (!tmp)
+		return (NULL);
+	i = ft_search_end(tmp) + 1;
+	while (tmp[i] && tmp[i] == '\n')
+		i++;
+	reste = (char *)ft_calloc(ft_strlen(tmp) - i + 1, sizeof(char));
+	if (!reste)
+		return (NULL);
+	j = 0;
+	while (tmp[i])
+		reste[j++] = tmp[i++];
+	reste[j] = 0;
+	free(tmp);
+	return (reste);
 }
 
 char	*get_next_line(int fd)
@@ -67,13 +100,14 @@ char	*get_next_line(int fd)
 		eol = ft_search_end(buff);
 		if (lu < 1 && !eol && !(*tmp))
 		{
+			printf("fin\n");
 			free(curr_line);
 			return (NULL);
 		}
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
 	}
-	printf("curr_line : [%s]\n", curr_line);
+	//printf("curr_line : [%s]\n", curr_line);
 	curr_line = ft_line(tmp);
 	if (ft_search_end(tmp))
 		tmp = ft_reste(tmp);
