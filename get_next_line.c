@@ -14,21 +14,24 @@
 
 char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line)
 {
-	if (lu < BUFFER_SIZE && !ft_search_end(tmp))
+	if (lu < 0 && *curr_line == 0 && *(tmp))
 	{
+//		printf("end of file. Curr_line : [%s]\n", curr_line);
 		free(curr_line);
 		return (NULL);
 	}
 	else
+	{
 		return (curr_line);
+	}
 }
 
 int	ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp)
 {
-	*lu = 1;
-	*curr_line = (char *)ft_calloc((4095 + 1), sizeof(char));
+	*curr_line = (char *)ft_calloc((4096 + 1), sizeof(char));
 	if (!curr_line)
 		return (-1);
+	*lu = 1;
 	*eol = 0;
 	if (*tmp)
 		ft_strcat(*curr_line, *tmp);
@@ -62,15 +65,15 @@ char	*ft_line(char *tmp)
 
 void	ft_reste(char **tmp)
 {
-	int		i;
+	size_t	i;
 
 	if (!(*tmp))
 		return ;
 	i = ft_search_end(*tmp);
+//	printf("fin = [%lu]\n", i);
 	if (i == 0)
 	{
-		**tmp = 0;
-		return ;
+		i = ft_strlen(*tmp);
 	}
 	while ((*tmp)[i] && (*tmp)[i] == '\n')
 		i++;
@@ -92,16 +95,17 @@ char	*get_next_line(int fd)
 	while (!eol && lu > 0)
 	{
 		lu = read(fd, buff, BUFFER_SIZE);
-		eol = ft_search_end(buff);
-		if (lu < 1 && !eol && !(*tmp))
+		if (lu < 0)
 		{
 			free(curr_line);
 			return (NULL);
 		}
+		eol = ft_search_end(buff);
 		buff[lu] = 0;
 		tmp = ft_strcat(curr_line, buff);
 	}
 	curr_line = ft_line(tmp);
 	ft_reste(&tmp);
+	ft_free_eof(&tmp, &lu, &curr_line);
 	return (curr_line);
 }

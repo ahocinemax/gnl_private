@@ -12,49 +12,55 @@
 
 #include "get_next_line.h"
 
-void	ft_putchar_fd(char c, int fd)
+static void	ft_putchar(char c)
 {
-	write(fd, &c, 1);
+	write(1, &c, 1);
 }
 
-void	ft_putnbr_fd(int n, int fd)
+static void	ft_putnbr(int n)
 {
 	if (n < 0)
-		ft_putchar_fd('-', fd);
+		ft_putchar('-');
 	if (n < 0)
 		n *= -1;
 	if (n < 10)
-		ft_putchar_fd(n + '0', fd);
+		ft_putchar(n + '0');
 	else
 	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
+		ft_putnbr(n / 10);
+		ft_putnbr(n % 10);
 	}
 }
 
-void	ft_putstr(char *s, int fd)
+static void	ft_putstr(char *s)
 {
 	int		i;
 
 	i = 0;
 	while (s[i])
-		ft_putchar_fd(s[i++], fd);
+		ft_putchar(s[i++]);
 }
 
 int	main(void)
 {
-	int		fd;
 	char	*ret;
+	int		fd;
 	int		i;
 
 	i = 1;
-	fd = open("test_d.txt", O_RDONLY);
-	if (fd < 0)
+	fd = open("test.txt", O_RDONLY);
+	if (1 < 0)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
 	{
 		while ((ret = get_next_line(fd)))
-			printf("line %d : [%s]\n", i++, ret);
+		{
+			ft_putstr("line ");
+			ft_putnbr(i++);
+			ft_putstr(" : [");
+			ft_putstr(ret);
+			ft_putstr("]\n");
+		}
 	}
 	return (0);
 }
