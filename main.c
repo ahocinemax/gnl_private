@@ -55,12 +55,14 @@ int	main(void)
 	{
 		while ((ret = get_next_line(fd)))
 		{
-			ft_putstr("line ");
+			ft_putstr("****************************************************\nline ");
 			ft_putnbr(i++);
 			ft_putstr(" : [");
 			ft_putstr(ret);
-			ft_putstr("]\n");
+			ft_putstr("]\n****************************************************\n\n");
 		}
+		close(fd);
+		printf("fd closed\n");
 	}
 	return (0);
 }

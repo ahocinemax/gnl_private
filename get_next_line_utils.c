@@ -64,18 +64,20 @@ void	*ft_calloc(size_t number, size_t len)
 	return (res);
 }
 
-int	ft_search_end(char *str)
+int	ft_search_end(char **str)
 {
 	ssize_t	i;
 
-	if (!str)
+	if (!(*str))
 		return (0);
+	while (**str == '\n')
+		(*str)++;
 	i = 0;
-	while (str[i])
+	while ((*str)[i])
 	{
-		if (str[i] == '\n')
+		if ((*str)[i] == '\n')
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }

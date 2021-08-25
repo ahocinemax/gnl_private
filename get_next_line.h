@@ -29,8 +29,8 @@ void	*ft_memset(void *dest, int c, size_t len);
 void	ft_strcat(char *dest, char *src);
 char	*get_next_line(int fd);
 void	ft_reste(char *buff);
-void	ft_line(char *reste);
+void	ft_line(char **line);
 int		ft_strlen(char *str);
-int		ft_search_end(char *str);
+int		ft_search_end(char **str);
 
 #endif
