@@ -22,14 +22,14 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-int		ft_init_check(ssize_t *lu, char **curr_line, int *eol, char **tmp);
-char	*ft_free_eof(char *tmp, ssize_t lu, char *curr_line);
+int		ft_init_check(ssize_t *lu, char **line, int *eol, char *buff);
+char	*ft_free_eof(char *reste, ssize_t lu, char *line);
 void	*ft_calloc(size_t number, size_t len);
 void	*ft_memset(void *dest, int c, size_t len);
-char	*ft_strcat(char *dest, char *src);
+void	ft_strcat(char *dest, char *src);
 char	*get_next_line(int fd);
-void	ft_reste(char **tmp);
-char	*ft_line(char *tmp);
+void	ft_reste(char *buff);
+void	ft_line(char *reste);
 int		ft_strlen(char *str);
 int		ft_search_end(char *str);
 

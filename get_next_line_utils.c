@@ -16,17 +16,21 @@ int	ft_strlen(char *str)
 {
 	int	i;
 
+	if (!str)
+		return (-1);
 	i = 0;
 	while (str[i])
 		i++;
 	return (i);
 }
 
-char	*ft_strcat(char *dest, char *src)
+void	ft_strcat(char *dest, char *src)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
+	if (!src || !dest)
+		return ;
 	i = 0;
 	while (dest[i])
 		i++;
@@ -37,7 +41,6 @@ char	*ft_strcat(char *dest, char *src)
 		j++;
 	}
 	dest[i + j] = 0;
-	return (dest);
 }
 
 void	*ft_memset(void *dest, int c, size_t len)
@@ -65,7 +68,7 @@ int	ft_search_end(char *str)
 {
 	ssize_t	i;
 
-	if (!str || !(*str))
+	if (!str)
 		return (0);
 	i = 0;
 	while (str[i])

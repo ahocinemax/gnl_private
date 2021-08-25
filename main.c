@@ -49,7 +49,7 @@ int	main(void)
 
 	i = 1;
 	fd = open("test.txt", O_RDONLY);
-	if (1 < 0)
+	if (fd < 0)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
 	{
