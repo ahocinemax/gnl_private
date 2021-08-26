@@ -59,7 +59,11 @@ void	*ft_calloc(size_t number, size_t len)
 
 	res = malloc(number * len);
 	if (!(res))
+	{
+		free(res);
+		res = NULL;
 		return (NULL);
+	}
 	res = ft_memset(res, 0, number * len);
 	return (res);
 }

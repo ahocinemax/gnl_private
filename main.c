@@ -62,7 +62,6 @@ int	main(void)
 			ft_putstr("]\n****************************************************\n\n");
 		}
 		close(fd);
-		printf("fd closed\n");
 	}
 	return (0);
 }
