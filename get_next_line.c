@@ -57,17 +57,17 @@ void	ft_reste(char *buff)
 		buff[j] = buff[i + j];
 		j++;
 	}
-	buff[j] = 0;
+	while (buff[j])
+		buff[j++] = 0;
 }
 
-char	*ft_free_eof(char *buff, ssize_t lu, char *line)
+void	ft_free_eof(char *buff, ssize_t lu, char **line)
 {
-	if (lu < 1 && !ft_strlen(line) && !ft_strlen(buff))
+	if (lu < 1 && !ft_strlen(*line) && !ft_strlen(buff))
 	{
-		free(line);
-		return (NULL);
+		free(*line);
+		*line = NULL;
 	}
-	return (line);
 }
 
 char	*get_next_line(int fd)
@@ -95,6 +95,6 @@ char	*get_next_line(int fd)
 	}
 	ft_line(&line);
 	ft_reste(buff);
-	line = ft_free_eof(buff, lu, line);
+	ft_free_eof(buff, lu, &line);
 	return (line);
 }
