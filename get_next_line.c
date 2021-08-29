@@ -12,18 +12,18 @@
 
 #include "get_next_line.h"
 
-int	ft_init_check(ssize_t *lu, char **line, int *eol, char *buff)
+int	ft_init_check(ssize_t *lu, char **line, char **reste)
 {
+	if (BUFFER_SIZE < 1)
+		return (-1);
 	*line = (char *)ft_calloc((4096 + 1), sizeof(char));
-	if (!line)
+	if (!(*line))
 	{
 		free(*line);
-		*line = NULL;
 		return (-1);
 	}
 	*lu = 1;
-	*eol = -1;
-	ft_strcat(*line, buff);
+	ft_strcat(*line, *reste);
 	while (**line == '\n')
 		(*line)++;
 	return (0);
@@ -41,60 +41,71 @@ void	ft_line(char **line)
 	(*line)[len] = 0;
 }
 
-void	ft_reste(char *buff)
+char	*ft_reste(char *buf)
 {
 	int		i;
 	int		j;
+	char	*res;
+	int		len_buf;
 
-	if (!buff)
-		return ;
-	i = ft_search_end(&buff);
-	while (buff[i] && buff[i] == '\n')
+	if (buf == NULL)
+		return (NULL);
+	i = ft_search_end(&buf);
+	if (i == -1)
+		return (NULL);
+	while (buf[i] && buf[i] == '\n')
 		i++;
+	len_buf = ft_strlen(buf);
+	res = (char *)ft_calloc(len_buf - i + 1, sizeof(char));
+	if (!res)
+		return (NULL);
 	j = 0;
-	while (buff[i + j])
+	while (buf[i + j] && i + j < len_buf)
 	{
-		buff[j] = buff[i + j];
+		res[j] = buf[i + j];
 		j++;
 	}
-	while (buff[j])
-		buff[j++] = 0;
+	res[j] = 0;
+	return (res);
 }
 
-void	ft_free_eof(char *buff, ssize_t lu, char **line)
+void	ft_free_eof(ssize_t lu, char **line, char **reste)
 {
-	if (lu < 1 && !ft_strlen(*line) && !ft_strlen(buff))
+	if (lu < 1 && ft_strlen(*line) < 1)
 	{
 		free(*line);
 		*line = NULL;
 	}
+	if (ft_strlen(*reste) < 1)
+	{
+		free(*reste);
+		*reste = NULL;
+	}
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int f)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	char		buf[BUFFER_SIZE + 1];
 	ssize_t		lu;
 	char		*line;
-	int			eol;
+	static char	*reste;
 
-	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE < 1 || \
-		ft_init_check(&lu, &line, &eol, buff))
+	if (f < 0 || read(f, NULL, 0) < 0 || ft_init_check(&lu, &line, &reste))
 		return (NULL);
-	while (eol < 0 && lu > 0)
+	while (ft_search_end(&line) == -1 && lu > 0)
 	{
-		lu = read(fd, buff, BUFFER_SIZE);
+		lu = read(f, buf, BUFFER_SIZE);
 		if (lu < 0)
 		{
 			free(line);
 			line = NULL;
 			return (NULL);
 		}
-		buff[lu] = 0;
-		ft_strcat(line, buff);
-		eol = ft_search_end(&line);
+		buf[lu] = 0;
+		ft_strcat(line, buf);
 	}
 	ft_line(&line);
-	ft_reste(buff);
-	ft_free_eof(buff, lu, &line);
+	reste = ft_reste(buf);
+	ft_free_eof(lu, &line, &reste);
 	return (line);
 }

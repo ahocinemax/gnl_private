@@ -43,7 +43,7 @@ static void	ft_putstr(char *s)
 
 int	main(void)
 {
-	char	*ret;
+	char	*ret = NULL;
 	int		fd;
 	int		i;
 

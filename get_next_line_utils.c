@@ -59,11 +59,7 @@ void	*ft_calloc(size_t number, size_t len)
 
 	res = malloc(number * len);
 	if (!(res))
-	{
-		free(res);
-		res = NULL;
 		return (NULL);
-	}
 	res = ft_memset(res, 0, number * len);
 	return (res);
 }
@@ -73,7 +69,7 @@ int	ft_search_end(char **str)
 	ssize_t	i;
 
 	if (!(*str))
-		return (0);
+		return (-1);
 	while (**str == '\n')
 		(*str)++;
 	i = 0;
