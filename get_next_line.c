@@ -18,12 +18,13 @@ int	ft_init_check(ssize_t *lu, char **line, char **reste)
 		return (-1);
 	*line = (char *)ft_calloc((4096 + 1), sizeof(char));
 	if (!(*line))
-	{
-		free(*line);
 		return (-1);
-	}
 	*lu = 1;
-	ft_strcat(*line, *reste);
+	if (*reste)
+	{
+		ft_strcat(*line, *reste);
+		free(*reste);
+	}
 	while (**line == '\n')
 		(*line)++;
 	return (0);
@@ -52,9 +53,15 @@ char	*ft_reste(char *buf)
 		return (NULL);
 	i = ft_search_end(&buf);
 	if (i == -1)
+	{
+		printf("\e[31mNo rest, returning NULL\e[0m\n");
 		return (NULL);
+	}
+	while (*buf == '\n')
+		(buf)++;
 	while (buf[i] && buf[i] == '\n')
 		i++;
+	printf("eol reste = %d\n", i);
 	len_buf = ft_strlen(buf);
 	res = (char *)ft_calloc(len_buf - i + 1, sizeof(char));
 	if (!res)
@@ -65,11 +72,12 @@ char	*ft_reste(char *buf)
 		res[j] = buf[i + j];
 		j++;
 	}
+	buf[0] = 0;
 	res[j] = 0;
 	return (res);
 }
 
-void	ft_free_eof(ssize_t lu, char **line, char **reste)
+void	ft_free_eof(ssize_t lu, char **line, char **reste, int f)
 {
 	if (lu < 1 && ft_strlen(*line) < 1)
 	{
@@ -81,6 +89,8 @@ void	ft_free_eof(ssize_t lu, char **line, char **reste)
 		free(*reste);
 		*reste = NULL;
 	}
+	if (*reste && !*line && **line == '\n')
+		*line = get_next_line(f);
 }
 
 char	*get_next_line(int f)
@@ -92,7 +102,7 @@ char	*get_next_line(int f)
 
 	if (f < 0 || read(f, NULL, 0) < 0 || ft_init_check(&lu, &line, &reste))
 		return (NULL);
-	while (ft_search_end(&line) == -1 && lu > 0)
+	while (ft_search_end(&line) < 0 && lu > 0)
 	{
 		lu = read(f, buf, BUFFER_SIZE);
 		if (lu < 0)
@@ -104,8 +114,12 @@ char	*get_next_line(int f)
 		buf[lu] = 0;
 		ft_strcat(line, buf);
 	}
+	printf("lu = [%s]\n", line);
 	ft_line(&line);
+	printf("line = [%s]\n", line);
+	printf("buffer = [%s]\n", buf);
 	reste = ft_reste(buf);
-	ft_free_eof(lu, &line, &reste);
+	printf("reste = [%s]\n", reste);
+	ft_free_eof(lu, &line, &reste, f);
 	return (line);
 }

@@ -60,6 +60,9 @@ int	main(void)
 			ft_putstr(" : [");
 			ft_putstr(ret);
 			ft_putstr("]\n****************************************************\n\n");
+			if (ret)
+				free(ret);
+			ret = NULL;
 		}
 		close(fd);
 	}

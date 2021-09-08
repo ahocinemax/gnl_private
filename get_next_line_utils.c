@@ -70,8 +70,6 @@ int	ft_search_end(char **str)
 
 	if (!(*str))
 		return (-1);
-	while (**str == '\n')
-		(*str)++;
 	i = 0;
 	while ((*str)[i])
 	{

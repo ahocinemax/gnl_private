@@ -23,7 +23,7 @@
 # include <unistd.h>
 
 int		ft_init_check(ssize_t *lu, char **line, char **reste);
-void	ft_free_eof(ssize_t lu, char **line, char **reste);
+void	ft_free_eof(ssize_t lu, char **line, char **reste, int f);
 void	*ft_calloc(size_t number, size_t len);
 void	*ft_memset(void *dest, int c, size_t len);
 void	ft_strcat(char *dest, char *src);
