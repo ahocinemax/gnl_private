@@ -32,6 +32,16 @@ void	ft_strcat(char *dest, char *src)
 	if (!src || !dest)
 		return ;
 	i = 0;
+	if (!ft_strlen(dest) && src[0] == '\n')
+	{
+		while (src[i + 1])
+		{
+			src[i] = src[i + 1];
+			i++;
+		}
+		src[i] = 0;
+	}
+	i = 0;
 	while (dest[i])
 		i++;
 	j = 0;
@@ -64,16 +74,16 @@ void	*ft_calloc(size_t number, size_t len)
 	return (res);
 }
 
-int	ft_search_end(char **str)
+int	ft_search_end(char *str)
 {
 	ssize_t	i;
 
-	if (!(*str))
+	if (!str)
 		return (-1);
 	i = 0;
-	while ((*str)[i])
+	while (str[i])
 	{
-		if ((*str)[i] == '\n')
+		if (str[i] == '\n')
 			return (i);
 		i++;
 	}

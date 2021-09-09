@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-int	ft_init_check(ssize_t *lu, char **line, char **reste)
+int	ft_init_check(ssize_t *lu, char **line, char **reste, char *buf)
 {
 	if (BUFFER_SIZE < 1)
 		return (-1);
@@ -23,6 +23,8 @@ int	ft_init_check(ssize_t *lu, char **line, char **reste)
 	if (*reste)
 	{
 		ft_strcat(*line, *reste);
+		if (ft_search_end(*reste) > 0)
+			ft_strcat(buf, *reste);
 		free(*reste);
 	}
 	while (**line == '\n')
@@ -36,7 +38,7 @@ void	ft_line(char **line)
 
 	if (!(*line))
 		return ;
-	len = ft_search_end(line);
+	len = ft_search_end(*line);
 	if (len < 0)
 		len = ft_strlen(*line);
 	(*line)[len] = 0;
@@ -49,19 +51,11 @@ char	*ft_reste(char *buf)
 	char	*res;
 	int		len_buf;
 
-	if (buf == NULL)
-		return (NULL);
-	i = ft_search_end(&buf);
+	i = ft_search_end(buf);
 	if (i == -1)
-	{
-		printf("\e[31mNo rest, returning NULL\e[0m\n");
 		return (NULL);
-	}
-	while (*buf == '\n')
-		(buf)++;
 	while (buf[i] && buf[i] == '\n')
 		i++;
-	printf("eol reste = %d\n", i);
 	len_buf = ft_strlen(buf);
 	res = (char *)ft_calloc(len_buf - i + 1, sizeof(char));
 	if (!res)
@@ -77,7 +71,7 @@ char	*ft_reste(char *buf)
 	return (res);
 }
 
-void	ft_free_eof(ssize_t lu, char **line, char **reste, int f)
+void	ft_free_eof(ssize_t lu, char **line, char **reste)
 {
 	if (lu < 1 && ft_strlen(*line) < 1)
 	{
@@ -89,8 +83,6 @@ void	ft_free_eof(ssize_t lu, char **line, char **reste, int f)
 		free(*reste);
 		*reste = NULL;
 	}
-	if (*reste && !*line && **line == '\n')
-		*line = get_next_line(f);
 }
 
 char	*get_next_line(int f)
@@ -100,9 +92,9 @@ char	*get_next_line(int f)
 	char		*line;
 	static char	*reste;
 
-	if (f < 0 || read(f, NULL, 0) < 0 || ft_init_check(&lu, &line, &reste))
+	if (f < 0 || read(f, NULL, 0) < 0 || ft_init_check(&lu, &line, &reste, buf))
 		return (NULL);
-	while (ft_search_end(&line) < 0 && lu > 0)
+	while (ft_search_end(line) < 0 && lu > 0)
 	{
 		lu = read(f, buf, BUFFER_SIZE);
 		if (lu < 0)
@@ -114,12 +106,8 @@ char	*get_next_line(int f)
 		buf[lu] = 0;
 		ft_strcat(line, buf);
 	}
-	printf("lu = [%s]\n", line);
 	ft_line(&line);
-	printf("line = [%s]\n", line);
-	printf("buffer = [%s]\n", buf);
 	reste = ft_reste(buf);
-	printf("reste = [%s]\n", reste);
-	ft_free_eof(lu, &line, &reste, f);
+	ft_free_eof(lu, &line, &reste);
 	return (line);
 }

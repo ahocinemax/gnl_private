@@ -53,7 +53,7 @@ int	main(void)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
 	{
-		while ((ret = get_next_line(fd)))
+		while ((ret = get_next_line(fd)) && i < 55)
 		{
 			ft_putstr("****************************************************\nline ");
 			ft_putnbr(i++);
@@ -64,6 +64,9 @@ int	main(void)
 				free(ret);
 			ret = NULL;
 		}
+		if (ret)
+			free(ret);
+		ret = NULL;
 		close(fd);
 	}
 	return (0);
