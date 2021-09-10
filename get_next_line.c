@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-int	ft_init_check(ssize_t *lu, char **line, char **reste, char **buf)
+int	ft_init(ssize_t *lu, char **line, char **reste, char **buf)
 {
 	if (BUFFER_SIZE < 1)
 		return (-1);
@@ -97,7 +97,7 @@ char	*get_next_line(int f)
 	char		*line;
 	static char	*reste;
 
-	if (f < 0 || read(f, NULL, 0) < 0 || ft_init_check(&lu, &line, &reste, &buf))
+	if (f < 0 || read(f, NULL, 0) < 0 || ft_init(&lu, &line, &reste, &buf))
 		return (NULL);
 	while (ft_search_end(line) < 0 && lu > 0 && line)
 	{
