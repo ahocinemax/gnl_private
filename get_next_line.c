@@ -16,19 +16,18 @@ int	ft_init_check(ssize_t *lu, char **line, char **reste, char *buf)
 {
 	if (BUFFER_SIZE < 1)
 		return (-1);
-	*line = (char *)ft_calloc((4096 + 1), sizeof(char));
+	*line = (char *)ft_calloc((10096 + 1), sizeof(char));
 	if (!(*line))
 		return (-1);
 	*lu = 1;
+	buf = buf;
 	if (*reste)
 	{
 		ft_strcat(*line, *reste);
-		if (ft_search_end(*reste) > 0)
+		if (ft_search_end(*reste) != -1)
 			ft_strcat(buf, *reste);
 		free(*reste);
 	}
-	while (**line == '\n')
-		(*line)++;
 	return (0);
 }
 
@@ -40,8 +39,12 @@ void	ft_line(char **line)
 		return ;
 	len = ft_search_end(*line);
 	if (len < 0)
+	{
 		len = ft_strlen(*line);
-	(*line)[len] = 0;
+		(*line)[len] = 0;
+	}
+	else
+		(*line)[len + 1] = 0;
 }
 
 char	*ft_reste(char *buf)
@@ -51,10 +54,12 @@ char	*ft_reste(char *buf)
 	char	*res;
 	int		len_buf;
 
+	if (!buf)
+		return (NULL);
 	i = ft_search_end(buf);
 	if (i == -1)
 		return (NULL);
-	while (buf[i] && buf[i] == '\n')
+	if (buf[i] && buf[i] == '\n')
 		i++;
 	len_buf = ft_strlen(buf);
 	res = (char *)ft_calloc(len_buf - i + 1, sizeof(char));
@@ -94,7 +99,7 @@ char	*get_next_line(int f)
 
 	if (f < 0 || read(f, NULL, 0) < 0 || ft_init_check(&lu, &line, &reste, buf))
 		return (NULL);
-	while (ft_search_end(line) < 0 && lu > 0)
+	while (ft_search_end(line) < 0 && lu > 0 && line)
 	{
 		lu = read(f, buf, BUFFER_SIZE);
 		if (lu < 0)
@@ -109,5 +114,7 @@ char	*get_next_line(int f)
 	ft_line(&line);
 	reste = ft_reste(buf);
 	ft_free_eof(lu, &line, &reste);
+	if (!line)
+		return (NULL);
 	return (line);
 }

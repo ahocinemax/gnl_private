@@ -32,16 +32,6 @@ void	ft_strcat(char *dest, char *src)
 	if (!src || !dest)
 		return ;
 	i = 0;
-	if (!ft_strlen(dest) && src[0] == '\n')
-	{
-		while (src[i + 1])
-		{
-			src[i] = src[i + 1];
-			i++;
-		}
-		src[i] = 0;
-	}
-	i = 0;
 	while (dest[i])
 		i++;
 	j = 0;
