@@ -20,7 +20,7 @@ int	main(void)
 
 	ret = NULL;
 	i = 1;
-	fd = open("gnlTester/files/multiple_nlx5", O_RDONLY);
+	fd = open("test.txt", O_RDONLY);
 	if (fd < 0)
 		printf("\e[31mError: open failed\e[0m\n");
 	else
